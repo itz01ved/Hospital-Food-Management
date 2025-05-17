@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - NutriCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-icon, .user-profile {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-layout {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding: 2rem 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item a:hover, .menu-item a.active {
+            background: rgba(79, 195, 247, 0.1);
+            color: var(--primary);
+            border-left: 3px solid var(--accent);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background: #f8fafc;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(22, 96, 136, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22, 96, 136, 0.4);
+        }
+
+        /* Order Cards */
+        .orders-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .order-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .order-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-preparing {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+        }
+
+        .status-ontheway {
+            background: rgba(79, 195, 247, 0.2);
+            color: var(--accent);
+        }
+
+        .status-delivered {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+        }
+
+        .order-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-item-name {
+            font-weight: 500;
+        }
+
+        .order-item-price {
+            color: #666;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Food Menu */
+        .food-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .food-image {
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .food-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .food-card:hover .food-image img {
+            transform: scale(1.1);
+        }
+
+        .food-info {
+            padding: 1.2rem;
+        }
+
+        .food-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .food-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .food-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .food-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .food-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .food-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .veg {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .non-veg {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .gluten-free {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        /* Progress Tracking */
+        .tracking-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .tracking-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .tracking-progress-line {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            height: 3px;
+            background: #eee;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .tracking-progress {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 50%;
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+
+        .tracking-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .step-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-icon.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+
+        .step-icon.completed {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .step-label.active {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .tracking-details {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .tracking-detail {
+            flex: 1;
+        }
+
+        .detail-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Map Container */
+        .map-container {
+            height: 300px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+            
+            .menu-item {
+                margin-bottom: 0;
+                margin-right: 1rem;
+                white-space: nowrap;
+            }
+            
+            .menu-item a {
+                padding: 0.5rem 1rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .menu-item a:hover, .menu-item a.active {
+                border-left: none;
+                border-bottom: 3px solid var(--accent);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .order-cards, .food-menu {
+                grid-template-columns: 1fr;
+            }
+            
+            .tracking-details {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-utensils"></i>
+                    NutriCare
+                </a>
+                <div class="user-menu">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="user-avatar">JD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="#" class="active">
+                        <i class="fas fa-clipboard-list"></i>
+                        My Orders
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="fas fa-utensils"></i>
+                        Order Food
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="fas fa-history"></i>
+                        Order History
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="fas fa-heart"></i>
+                        Dietary Preferences
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="fas fa-question-circle"></i>
+                        Help
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sign Out
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">My Orders</h1>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Order
+                </button>
+            </div>
+
+            <!-- Current Orders Section -->
+            <section class="orders-section">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i> Current Orders
+                </h2>
+                <div class="order-cards">
+                    <!-- Order Card 1 -->
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-id">ORDER #NC-7892</span>
+                            <span class="order-status status-ontheway">On The Way</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-item">
+                                <span class="order-item-name">Vegetable Soup</span>
+                                <span class="order-item-price">$3.99</span>
+                            </div>
+                            <div class="order-item">
+                                <span class="order-item-name">Grilled Chicken</span>
+                                <span class="order-item-price">$6.99</span>
+                            </div>
+                            <div class="order-item">
+                                <span class="order-item-name">Fruit Salad</span>
+                                <span class="order-item-price">$4.49</span>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <span>Total</span>
+                            <span>$15.47</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline">
+                                <i class="fas fa-map-marker-alt"></i> Track
+                            </button>
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-phone"></i> Call Staff
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Card 2 -->
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span class="order-id">ORDER #NC-7891</span>
+                            <span class="order-status status-preparing">Preparing</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-item">
+                                <span class="order-item-name">Pasta Alfredo</span>
+                                <span class="order-item-price">$5.99</span>
+                            </div>
+                            <div class="order-item">
+                                <span class="order-item-name">Garlic Bread</span>
+                                <span class="order-item-price">$2.49</span>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <span>Total</span>
+                            <span>$8.48</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" disabled>
+                                <i class="fas fa-clock"></i> Preparing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Order Tracking Section -->
+            <section class="orders-section">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marked-alt"></i> Track Your Order
+                </h2>
+                <div class="tracking-container">
+                    <div class="tracking-header">
+                        <h3>ORDER #NC-7892</h3>
+                        <span class="order-status status-ontheway">On The Way</span>
+                    </div>
+                    <div class="tracking-steps">
+                        <div class="tracking-progress-line"></div>
+                        <div class="tracking-progress" style="width: 50%;"></div>
+                        
+                        <div class="tracking-step">
+                            <div class="step-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="step-label">Order Placed</span>
+                        </div>
+                        <div class="tracking-step">
+                            <div class="step-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="step-label">Preparing</span>
+                        </div>
+                        <div class="tracking-step">
+                            <div class="step-icon active">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <span class="step-label active">On The Way</span>
+                        </div>
+                        <div class="tracking-step">
+                            <div class="step-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span class="step-label">Delivered</span>
+                        </div>
+                    </div>
+                    <div class="tracking-details">
+                        <div class="tracking-detail">
+                            <div class="detail-title">Estimated Delivery</div>
+                            <div class="detail-value">12:45 PM (15 min)</div>
+                        </div>
+                        <div class="tracking-detail">
+                            <div class="detail-title">Delivery Staff</div>
+                            <div class="detail-value">Michael Johnson</div>
+                        </div>
+                        <div class="tracking-detail">
+                            <div class="detail-title">Staff Contact</div>
+                            <div class="detail-value">+1 (555) 123-4567</div>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            <i class="fas fa-map-marked-alt fa-3x" style="margin-right: 1rem;"></i>
+                            <span>Live delivery tracking map will appear here</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Food Menu Section -->
+            <section class="orders-section">
+                <h2 class="section-title">
+                    <i class="fas fa-utensils"></i> Today's Menu
+                </h2>
+                <div class="food-menu">
+                    <!-- Food Card 1 -->
+                    <div class="food-card">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="Healthy Salad">
+                        </div>
+                        <div class="food-info">
+                            <h3 class="food-title">Healthy Salad</h3>
+                            <p class="food-description">Fresh greens with cherry tomatoes, cucumber, and balsamic dressing</p>
+                            <div class="food-meta">
+                                <span class="food-price">$5.99</span>
+                                <div class="food-tags">
+                                    <span class="food-tag veg">Veg</span>
+                                    <span class="food-tag gluten-free">Gluten-Free</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Food Card 2 -->
+                    <div class="food-card">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Grilled Chicken">
+                        </div>
+                        <div class="food-info">
+                            <h3 class="food-title">Grilled Chicken</h3>
+                            <p class="food-description">Juicy chicken breast with steamed vegetables and mashed potatoes</p>
+                            <div class="food-meta">
+                                <span class="food-price">$6.99</span>
+                                <div class="food-tags">
+                                    <span class="food-tag non-veg">Non-Veg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Food Card 3 -->
+                    <div class="food-card">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1611270629569-8b357cb88da9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Vegetable Soup">
+                        </div>
+                        <div class="food-info">
+                            <h3 class="food-title">Vegetable Soup</h3>
+                            <p class="food-description">Hearty soup with seasonal vegetables and herbs</p>
+                            <div class="food-meta">
+                                <span class="food-price">$3.99</span>
+                                <div class="food-tags">
+                                    <span class="food-tag veg">Veg</span>
+                                    <span class="food-tag gluten-free">Gluten-Free</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Interactive order tracking progress
+        function updateProgress(percent) {
+            document.querySelector('.tracking-progress').style.width = percent + '%';
+        }
+
+        // Simulate progress update (in real app, this would come from backend)
+        setTimeout(() => updateProgress(50), 500);
+        setTimeout(() => updateProgress(75), 3000);
+        setTimeout(() => updateProgress(100), 6000);
+
+        // Toggle active order card
+        const orderCards = document.querySelectorAll('.order-card');
+        orderCards.forEach(card => {
+            card.addEventListener('click', () => {
+                orderCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            });
+        });
+
+        // Food card hover effect
+        const foodCards = document.querySelectorAll('.food-card');
+        foodCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('img').style.transform = 'scale(1.1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('img').style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
