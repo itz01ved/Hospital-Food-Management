@@ -1,0 +1,1530 @@
+<html lang="en"> 
+<head> 
+<meta charset="utf-8"/> 
+<meta content="width=device-width, initial-scale=1" name="viewport"/> 
+<title> 
+Hospital Food Delivery Management 
+</title> 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/> 
+<style> 
+body { 
+background-color: #f8fafc; 
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+} 
+.sidebar { 
+min-height: 100vh; 
+background-color: #0d6efd; 
+color: white; 
+} 
+.sidebar a { 
+color: white; 
+text-decoration: none; 
+} 
+.sidebar a.active, .sidebar a:hover { 
+background-color: #084298; 
+color: white; 
+} 
+.nav-link i { 
+width: 20px; 
+} 
+.status-pending { 
+background-color: #6c757d; 
+color: white; 
+padding: 0.25rem 0.5rem; 
+border-radius: 0.25rem; 
+font-size: 0.85rem; 
+font-weight: 600; 
+} 
+.status-prepared { 
+background-color: #0d6efd; 
+color: white; 
+padding: 0.25rem 0.5rem; 
+border-radius: 0.25rem; 
+font-size: 0.85rem; 
+font-weight: 600; 
+} 
+.status-dispatched { 
+background-color: #ffc107; 
+color: black; 
+padding: 0.25rem 0.5rem; 
+border-radius: 0.25rem; 
+font-size: 0.85rem; 
+font-weight: 600; 
+} 
+.status-delivered { 
+background-color: #198754; 
+color: white; 
+padding: 0.25rem 0.5rem; 
+border-radius: 0.25rem; 
+font-size: 0.85rem; 
+font-weight: 600; 
+} 
+.form-section { 
+background: white; 
+padding: 1.5rem; 
+border-radius: 0.5rem; 
+box-shadow: 0 0 10px rgb(0 0 0 / 0.1); 
+margin-bottom: 2rem; 
+} 
+.card-icon { 
+font-size: 2.5rem; 
+opacity: 0.15; 
+position: absolute; 
+top: 1rem; 
+right: 1rem; 
+} 
+.pointer { 
+cursor: pointer; 
+} 
+@media (max-width: 767.98px) { 
+.sidebar { 
+min-height: auto; 
+} 
+} 
+</style> 
+</head> 
+<body> 
+<div class="d-flex flex-column flex-md-row min-vh-100"> 
+<!-- Sidebar --> 
+<nav class="sidebar flex-shrink-0 p-3 col-md-3 col-lg-2 d-md-block"> 
+<div class="d-flex align-items-center mb-4"> 
+<img alt="Hospital Food Delivery Management Logo, blue and white hospital icon with fork and spoon" class="me-2 rounded" height="40" src="https://storage.googleapis.com/a1aa/image/fd08c57e-65f1-439c-e599-5aaa862a66bf.jpg" width="40"/> 
+<span class="fs-4 fw-bold"> 
+NutriCare
+</span> 
+</div> 
+<ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu"> 
+<li class="nav-item mb-1"> 
+<a aria-current="page" class="nav-link active d-flex align-items-center" href="#adminDashboard"> 
+<i class="fas fa-tachometer-alt me-2"> 
+</i> 
+Dashboard 
+</a> 
+</li> 
+<li class="nav-item mb-1"> 
+<a class="nav-link d-flex align-items-center" href="#hospitalManagement"> 
+<i class="fas fa-hospital me-2"> 
+</i> 
+Manage Hospitals 
+</a> 
+</li> 
+<li class="nav-item mb-1"> 
+<a class="nav-link d-flex align-items-center" href="#patientManagement"> 
+<i class="fas fa-procedures me-2"> 
+</i> 
+Patients 
+</a> 
+</li> 
+<li class="nav-item mb-1"> 
+<a class="nav-link d-flex align-items-center" href="#dietManagement"> 
+<i class="fas fa-apple-alt me-2"> 
+</i> 
+Diet Charts 
+</a> 
+</li> 
+<li class="nav-item mb-1"> 
+<a class="nav-link d-flex align-items-center" href="#mealTracking"> 
+<i class="fas fa-utensils me-2"> 
+</i> 
+Meal Tracking 
+</a> 
+</li> 
+<li class="nav-item mb-1"> 
+<a class="nav-link d-flex align-items-center" href="#billingIntegration"> 
+<i class="fas fa-file-invoice-dollar me-2"> 
+</i> 
+Billing 
+</a> 
+</li> 
+<li class="nav-item mt-3"> 
+<a class="nav-link d-flex align-items-center text-danger" href="#" id="logoutBtn"> 
+<i class="fas fa-sign-out-alt me-2"> 
+</i> 
+Logout 
+</a> 
+</li> 
+</ul> 
+</nav> 
+<!-- Main Content --> 
+<main class="flex-grow-1 p-4" style="background-color: #f8fafc;"> 
+<!-- Admin Dashboard --> 
+<section class="content-section" id="adminDashboard"> 
+<h2 class="mb-4"> 
+Admin Dashboard 
+</h2> 
+<div class="row g-4 mb-4"> 
+<div class="col-6 col-md-3"> 
+<div class="card position-relative shadow-sm"> 
+<div class="card-body"> 
+<i class="fas fa-hospital card-icon"> 
+</i> 
+<h5 class="card-title"> 
+Total Hospitals 
+</h5> 
+<p class="fs-3 fw-bold" id="totalHospitals"> 
+5 
+</p> 
+</div> 
+</div> 
+</div> 
+<div class="col-6 col-md-3"> 
+<div class="card position-relative shadow-sm"> 
+<div class="card-body"> 
+<i class="fas fa-procedures card-icon"> 
+</i> 
+<h5 class="card-title"> 
+Total Patients 
+</h5> 
+<p class="fs-3 fw-bold" id="totalPatients"> 
+48 
+</p> 
+</div> 
+</div> 
+</div> 
+<div class="col-6 col-md-3"> 
+<div class="card position-relative shadow-sm"> 
+<div class="card-body"> 
+<i class="fas fa-utensils card-icon"> 
+</i> 
+<h5 class="card-title"> 
+Meals Today 
+</h5> 
+<p class="fs-3 fw-bold" id="mealsToday"> 
+144 
+</p> 
+</div> 
+</div> 
+</div> 
+<div class="col-6 col-md-3"> 
+<div class="card position-relative shadow-sm"> 
+<div class="card-body"> 
+<i class="fas fa-truck-loading card-icon"> 
+</i> 
+<h5 class="card-title"> 
+Pending Deliveries 
+</h5> 
+<p class="fs-3 fw-bold" id="pendingDeliveries"> 
+12 
+</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+<h4 class="mb-3"> 
+Meal Completion Overview 
+</h4> 
+<div class="mb-5"> 
+<div class="d-flex justify-content-between mb-1"> 
+<span> 
+Prepared 
+</span> 
+<span id="preparedCount"> 
+100 
+</span> 
+</div> 
+<div class="progress mb-3" style="height: 20px;"> 
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70" class="progress-bar bg-primary" role="progressbar" style="width: 70%;"> 
+</div> 
+</div> 
+<div class="d-flex justify-content-between mb-1"> 
+<span> 
+Dispatched 
+</span> 
+<span id="dispatchedCount"> 
+80 
+</span> 
+</div> 
+<div class="progress mb-3" style="height: 20px;"> 
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="56" class="progress-bar bg-warning" role="progressbar" style="width: 56%;"> 
+</div> 
+</div> 
+<div class="d-flex justify-content-between mb-1"> 
+<span> 
+Delivered 
+</span> 
+<span id="deliveredCount"> 
+65 
+</span> 
+</div> 
+<div class="progress" style="height: 20px;"> 
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="45" class="progress-bar bg-success" role="progressbar" style="width: 45%;"> 
+</div> 
+</div> 
+</div> 
+</section> 
+<!-- Hospital Management --> 
+<section class="content-section d-none" id="hospitalManagement"> 
+<h2 class="mb-4"> 
+Manage Hospitals 
+</h2> 
+<div class="form-section"> 
+<form class="row g-3" id="hospitalForm"> 
+<div class="col-md-5"> 
+<label class="form-label" for="hospitalName"> 
+Hospital Name 
+</label> 
+<input class="form-control" id="hospitalName" required="" type="text"/> 
+</div> 
+<div class="col-md-5"> 
+<label class="form-label" for="hospitalLocation"> 
+Location 
+</label> 
+<input class="form-control" id="hospitalLocation" required="" type="text"/> 
+</div> 
+<div class="col-md-2"> 
+<label class="form-label" for="billingApi"> 
+Billing API Endpoint 
+</label> 
+<input class="form-control" id="billingApi" placeholder="https://api.example.com/billing" type="url"/> 
+</div> 
+<div class="col-12 d-flex justify-content-end"> 
+<button class="btn btn-primary" type="submit"> 
+Add Hospital 
+</button> 
+</div> 
+</form> 
+</div> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+# 
+</th> 
+<th> 
+Name 
+</th> 
+<th> 
+Location 
+</th> 
+<th> 
+Billing API Endpoint 
+</th> 
+<th> 
+Actions 
+</th> 
+</tr> 
+</thead> 
+<tbody id="hospitalTableBody"> 
+<tr> 
+<td> 
+1 
+</td> 
+<td> 
+City General Hospital 
+</td> 
+<td> 
+Mumbai , Maharashtra
+</td> 
+<td> 
+https://billing.citygeneral.com/api 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"> 
+<i class="fas fa-trash-alt"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+2 
+</td> 
+<td> 
+Green Valley Medical Center 
+</td> 
+<td> 
+Pune, Maharashtra
+</td> 
+<td> 
+https://billing.greenvalleymed.com/api 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"> 
+<i class="fas fa-trash-alt"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+3 
+</td> 
+<td> 
+Sunrise Health Clinic 
+</td> 
+<td> 
+jalgaon, Maharashtra
+</td> 
+<td> 
+https://billing.sunrisehealth.com/api 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"> 
+<i class="fas fa-trash-alt"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+4 
+</td> 
+<td> 
+Riverbend Hospital 
+</td> 
+<td> 
+Nashik , Maharashtra
+</td> 
+<td> 
+https://billing.riverbend.com/api 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"> 
+<i class="fas fa-trash-alt"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+5 
+</td> 
+<td> 
+Mountainview Medical 
+</td> 
+<td> 
+Bandra-West , Mumbai 
+</td> 
+<td> 
+https://billing.mountainviewmed.com/api 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"> 
+<i class="fas fa-trash-alt"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</section> 
+<!-- Patient Management --> 
+<section class="content-section d-none" id="patientManagement"> 
+<h2 class="mb-4"> 
+Patient Management 
+</h2> 
+<div class="form-section"> 
+<form class="row g-3" id="patientForm"> 
+<div class="col-md-4"> 
+<label class="form-label" for="patientName"> 
+Name 
+</label> 
+<input class="form-control" id="patientName" required="" type="text"/> 
+</div> 
+<div class="col-md-2"> 
+<label class="form-label" for="patientAge"> 
+Age 
+</label> 
+<input class="form-control" id="patientAge" max="120" min="0" required="" type="number"/> 
+</div> 
+<div class="col-md-2"> 
+<label class="form-label" for="patientGender"> 
+Gender 
+</label> 
+<select class="form-select" id="patientGender" required=""> 
+<option disabled="" selected="" value=""> 
+Select gender 
+</option> 
+<option value="Male"> 
+Male 
+</option> 
+<option value="Female"> 
+Female 
+</option> 
+<option value="Other"> 
+Other 
+</option> 
+</select> 
+</div> 
+<div class="col-md-2"> 
+<label class="form-label" for="patientRoom"> 
+Room Number 
+</label> 
+<input class="form-control" id="patientRoom" required="" type="text"/> 
+</div> 
+<div class="col-md-4"> 
+<label class="form-label" for="patientIllness"> 
+Illness 
+</label> 
+<select class="form-select" id="patientIllness" required=""> 
+<option disabled="" selected="" value=""> 
+Select illness 
+</option> 
+<option value="Diabetes"> 
+Diabetes 
+</option> 
+<option value="Kidney"> 
+Kidney Disease 
+</option> 
+<option value="Hypertension"> 
+Hypertension 
+</option> 
+<option value="Cardiac"> 
+Cardiac Issues 
+</option> 
+<option value="Liver"> 
+Liver Disease 
+</option> 
+<option value="General"> 
+General 
+</option> 
+</select> 
+</div> 
+<div class="col-md-3"> 
+<label class="form-label" for="admissionDate"> 
+Admission Date 
+</label> 
+<input class="form-control" id="admissionDate" required="" type="date"/> 
+</div> 
+<div class="col-12 d-flex justify-content-end"> 
+<button class="btn btn-primary" type="submit"> 
+Add Patient 
+</button> 
+</div> 
+</form> 
+</div> 
+<div class="mb-3"> 
+<input class="form-control" id="patientSearch" placeholder="Search patients by name, room, or illness" type="text"/> 
+</div> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+# 
+</th> 
+<th> 
+Name 
+</th> 
+<th> 
+Age 
+</th> 
+<th> 
+Gender 
+</th> 
+<th> 
+Room 
+</th> 
+<th> 
+Illness 
+</th> 
+<th> 
+Admission Date 
+</th> 
+<th> 
+Status 
+</th> 
+<th> 
+Actions 
+</th> 
+</tr> 
+</thead> 
+<tbody id="patientTableBody"> 
+<tr> 
+<td> 
+1 
+</td> 
+<td> 
+Ramakant Patil
+</td> 
+<td> 
+56 
+</td> 
+<td> 
+Male 
+</td> 
+<td> 
+302A 
+</td> 
+<td> 
+Diabetes 
+</td> 
+<td> 
+2025-03-01 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Admitted 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"> 
+<i class="fas fa-user-slash"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+2 
+</td> 
+<td> 
+Kishore Mahajan 
+</td> 
+<td> 
+42 
+</td> 
+<td> 
+male 
+</td> 
+<td> 
+105B 
+</td> 
+<td> 
+Kidney 
+</td> 
+<td> 
+2025-04-13 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Admitted 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"> 
+<i class="fas fa-user-slash"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+3 
+</td> 
+<td> 
+Ashwini Chaudhari
+</td> 
+<td> 
+32 
+</td> 
+<td> 
+Female 
+</td> 
+<td> 
+207C 
+</td> 
+<td> 
+Hypertension 
+</td> 
+<td> 
+2025-02-02 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Admitted 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"> 
+<i class="fas fa-user-slash"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+4 
+</td> 
+<td> 
+Mamta Ingle 
+</td> 
+<td> 
+50 
+</td> 
+<td> 
+Female 
+</td> 
+<td> 
+410D 
+</td> 
+<td> 
+Cardiac 
+</td> 
+<td> 
+2024-06-04 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Admitted 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"> 
+<i class="fas fa-user-slash"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+5 
+</td> 
+<td> 
+Samadhan Gurjar 
+</td> 
+<td> 
+38 
+</td> 
+<td> 
+Male 
+</td> 
+<td> 
+112A 
+</td> 
+<td> 
+Liver 
+</td> 
+<td> 
+2025-04-20 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Admitted 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"> 
+<i class="fas fa-edit"> 
+</i> 
+</button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"> 
+<i class="fas fa-user-slash"> 
+</i> 
+</button> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</section> 
+<!-- Diet Management --> 
+<section class="content-section d-none" id="dietManagement"> 
+<h2 class="mb-4"> 
+Diet Management 
+</h2> 
+<div class="row g-4"> 
+<div class="col-md-5"> 
+<div class="form-section"> 
+<h5> 
+Illness List 
+</h5> 
+<ul class="list-group" id="illnessList" style="max-height: 400px; overflow-y: auto;"> 
+<li class="list-group-item pointer" data-illness="Diabetes"> 
+Diabetes 
+</li> 
+<li class="list-group-item pointer" data-illness="Kidney"> 
+Kidney Disease 
+</li> 
+<li class="list-group-item pointer" data-illness="Hypertension"> 
+Hypertension 
+</li> 
+<li class="list-group-item pointer" data-illness="Cardiac"> 
+Cardiac Issues 
+</li> 
+<li class="list-group-item pointer" data-illness="Liver"> 
+Liver Disease 
+</li> 
+<li class="list-group-item pointer" data-illness="General"> 
+General 
+</li> 
+</ul> 
+</div> 
+</div> 
+<div class="col-md-7"> 
+<div class="form-section"> 
+<h5 id="dietChartTitle"> 
+Select an illness to view/edit diet chart 
+</h5> 
+<form class="d-none" id="dietChartForm"> 
+<div class="mb-3"> 
+<label class="form-label" for="foodItems"> 
+Food Items (comma separated) 
+</label> 
+<textarea class="form-control" id="foodItems" placeholder="E.g. Brown rice, Steamed vegetables, Grilled chicken" required="" rows="4"></textarea> 
+</div> 
+<div class="mb-3"> 
+<label class="form-label" for="nutritionalInfo"> 
+Nutritional Information 
+</label> 
+<textarea class="form-control" id="nutritionalInfo" placeholder="E.g. Low sugar, low sodium, high protein" required="" rows="3"></textarea> 
+</div> 
+<button class="btn btn-primary" type="submit"> 
+Save Diet Chart 
+</button> 
+</form> 
+</div> 
+</div> 
+</div> 
+</section> 
+
+<div class="mt-5">
+    <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#indianDietPlan" aria-expanded="false" aria-controls="indianDietPlan">
+        Show Indian Diet Plan for Common Diseases
+    </button>
+    <div class="collapse" id="indianDietPlan">
+        <div class="card card-body" style="overflow-x: auto;">
+            <h4 class="text-center mb-4">Indian Diet Plan for Common Diseases</h4>
+            
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>Disease</th>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Dinner</th>
+                        <th>Snacks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+  <td><strong>Diabetes</strong></td>
+  <td>Vegetable upma or moong dal chilla<br><img src="Upma-2-3.jpg" alt="diet" width="100"></td>
+  <td>2 multigrain rotis, methi sabzi, salad, and curd<br><img src="diet2.jpg" alt="Roti Sabzi" width="100"></td>
+  <td>Vegetable khichdi with lauki raita<br><img src="khichdi.jpg" alt="Khichdi" width="100"></td>
+  <td>Sprouts chaat, almonds<br><img src="Sprout-Salad-Thumbnail.jpg" alt="Sprouts Chaat" width="100"></td>
+</tr>
+
+                    
+                    <tr>
+                        <td><strong>Heart Disease</strong></td>
+                        <td>Oats or daliya with vegetables<br><img src="diet3.jpg" alt="diet" width="100"></td>
+                        <td>Brown rice, palak dal, stir-fried bhindi, and cucumber salad<br><img src="Brown cucumber salad.jpg" alt="diet4" width="100"></td>
+                        <td>2 jowar rotis, mixed vegetable curry, low-fat curd<img src="mixed-vegetable-curry-13.jpg" alt="mixed-vegetable-curry-13" width="100"></td>
+                        <td>Fruit bowl (apple, papaya), walnuts<img src="Fruit-Salad.jpg" alt="fruits" width="100"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kidney Disease</strong></td>
+                        <td>Suji upma with coriander chutney (low salt)<img src="Upma-2-3.jpg" alt="diet5" width="100"></td>
+                        <td>White rice with bottle gourd curry and plain dal (no tomato)<img src="lauki.JPG" alt="" width="100"></td>
+                        <td>Soft khichdi with minimal salt and spices<img src="khichdi.jpg" alt="diet" width="100"></td>
+                        <td>Roasted makhana, peeled apple slices<img src="roasted_makhana.jpg" alt="diet" width="100"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hypertension</strong></td>
+                        <td>Poha with vegetables and lemon juice<img src="juice.jpg" alt="diet77" width="100"></td>
+                        <td>Roti (no salt in dough), tinda curry, and low-sodium dal<img src="maxresdefault.jpg" alt="diet8" width="100"></td>
+                        <td>Vegetable daliya or low-salt khichdi<img src="Methi_Cabbage_Chana_Dal_Sabzi_Curd_Phulka.jpg" alt="diet9" width="100"></td>
+                        <td>Carrot sticks, unsalted roasted chana<img src="carrot1.jpg" alt="carrot" width="100"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Meal Tracking --> 
+<section class="content-section d-none" id="mealTracking"> 
+<h2 class="mb-4"> 
+Meal Preparation Tracker 
+</h2> 
+<ul class="nav nav-tabs mb-3" id="mealTypeTabs" role="tablist"> 
+<li class="nav-item" role="presentation"> 
+<button aria-controls="breakfast" aria-selected="true" class="nav-link active" data-bs-target="#breakfast" data-bs-toggle="tab" id="breakfast-tab" role="tab" type="button"> 
+Breakfast 
+</button> 
+</li> 
+<li class="nav-item" role="presentation"> 
+<button aria-controls="lunch" aria-selected="false" class="nav-link" data-bs-target="#lunch" data-bs-toggle="tab" id="lunch-tab" role="tab" type="button"> 
+Lunch 
+</button> 
+</li> 
+<li class="nav-item" role="presentation"> 
+<button aria-controls="dinner" aria-selected="false" class="nav-link" data-bs-target="#dinner" data-bs-toggle="tab" id="dinner-tab" role="tab" type="button"> 
+Dinner 
+</button> 
+</li> 
+</ul> 
+<div class="tab-content" id="mealTabContent"> 
+<!-- Breakfast Tab --> 
+<div aria-labelledby="breakfast-tab" class="tab-pane fade show active" id="breakfast" role="tabpanel"> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+Patient Name 
+</th> 
+<th> 
+Room 
+</th> 
+<th> 
+Meal Type 
+</th> 
+<th> 
+Status 
+</th> 
+<th> 
+Action 
+</th> 
+</tr> 
+</thead> 
+<tbody id="breakfastMeals"> 
+<tr> 
+<td> 
+Ramakant Patil
+</td> 
+<td> 
+302A 
+</td> 
+<td> 
+Breakfast 
+</td> 
+<td> 
+<span class="status-prepared"> 
+Prepared 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-warning updateStatusBtn" data-status="dispatched"> 
+Dispatch 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Kamlesh Mahajan
+</td> 
+<td> 
+105B 
+</td> 
+<td> 
+Breakfast 
+</td> 
+<td> 
+<span class="status-pending"> 
+Pending 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-primary updateStatusBtn" data-status="prepared"> 
+Prepare 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Ashwini Chaudhari
+</td> 
+<td> 
+207C 
+</td> 
+<td> 
+Breakfast 
+</td> 
+<td> 
+<span class="status-dispatched"> 
+Dispatched 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-success updateStatusBtn" data-status="delivered"> 
+Mark Delivered 
+</button> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</div> 
+<!-- Lunch Tab --> 
+<div aria-labelledby="lunch-tab" class="tab-pane fade" id="lunch" role="tabpanel"> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+Patient Name 
+</th> 
+<th> 
+Room 
+</th> 
+<th> 
+Meal Type 
+</th> 
+<th> 
+Status 
+</th> 
+<th> 
+Action 
+</th> 
+</tr> 
+</thead> 
+<tbody id="lunchMeals"> 
+<tr> 
+<td> 
+Ramakant Patil</td> 
+<td> 
+302A 
+</td> 
+<td> 
+Lunch 
+</td> 
+<td> 
+<span class="status-pending"> 
+Pending 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-primary updateStatusBtn" data-status="prepared"> 
+Prepare 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Kamlesh Mahajan
+</td> 
+<td> 
+105B 
+</td> 
+<td> 
+Lunch 
+</td> 
+<td> 
+<span class="status-prepared"> 
+Prepared 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-warning updateStatusBtn" data-status="dispatched"> 
+Dispatch 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Ashwini Chaudhari
+</td> 
+<td> 
+207C 
+</td> 
+<td> 
+Lunch 
+</td> 
+<td> 
+<span class="status-dispatched"> 
+Dispatched 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-success updateStatusBtn" data-status="delivered"> 
+Mark Delivered 
+</button> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</div> 
+<!-- Dinner Tab --> 
+<div aria-labelledby="dinner-tab" class="tab-pane fade" id="dinner" role="tabpanel"> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+Patient Name 
+</th> 
+<th> 
+Room 
+</th> 
+<th> 
+Meal Type 
+</th> 
+<th> 
+Status 
+</th> 
+<th> 
+Action 
+</th> 
+</tr> 
+</thead> 
+<tbody id="dinnerMeals"> 
+<tr> 
+<td>
+    Ramakant Patil 
+</td> 
+<td> 
+302A 
+</td> 
+<td> 
+Dinner 
+</td> 
+<td> 
+<span class="status-prepared"> 
+Prepared 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-warning updateStatusBtn" data-status="dispatched"> 
+Dispatch 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Kamlesh Mahajan
+</td> 
+<td> 
+105B 
+</td> 
+<td> 
+Dinner 
+</td> 
+<td> 
+<span class="status-pending"> 
+Pending 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-primary updateStatusBtn" data-status="prepared"> 
+Prepare 
+</button> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Ashwini Chaudhari 
+</td> 
+<td> 
+207C 
+</td> 
+<td> 
+Dinner 
+</td> 
+<td> 
+<span class="status-dispatched"> 
+Dispatched 
+</span> 
+</td> 
+<td> 
+<button class="btn btn-sm btn-success updateStatusBtn" data-status="delivered"> 
+Mark Delivered 
+</button> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</div> 
+</div> 
+</section> 
+<!-- Billing Integration --> 
+<section class="content-section d-none" id="billingIntegration"> 
+<h2 class="mb-4"> 
+Billing Integration 
+</h2> 
+<div class="mb-3"> 
+<button class="btn btn-primary" id="syncBillingBtn"> 
+<i class="fas fa-sync-alt me-2"> 
+</i> 
+Sync with Hospital Billing System 
+</button> 
+</div> 
+<div class="table-responsive"> 
+<table class="table table-striped table-hover align-middle"> 
+<thead class="table-primary"> 
+<tr> 
+<th> 
+Patient Name 
+</th> 
+<th> 
+Meal Cost 
+</th> 
+<th> 
+Billed At 
+</th> 
+<th> 
+Status 
+</th> 
+</tr> 
+</thead> 
+<tbody id="billingTableBody"> 
+<tr> 
+<td> 
+Kishore Deore
+</td> 
+<td> 
+Rs4500.00 
+</td> 
+<td> 
+2024-06-10 12:30 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Billed 
+</span> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Dipti Deshmukh 
+</td> 
+<td> 
+Rs3850.00
+</td> 
+<td> 
+2024-06-10 12:45 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Billed 
+</span> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Ashwini Chaudhari 
+</td> 
+<td> 
+Rs2242.00 
+</td> 
+<td> 
+2025-01-10 13:00 
+</td> 
+<td> 
+<span class="badge bg-warning"> 
+Pending 
+</span> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Sonal Salunkhe
+</td> 
+<td> 
+Rs3250.00 
+</td> 
+<td> 
+2025-02-04 13:15 
+</td> 
+<td> 
+<span class="badge bg-success"> 
+Billed 
+</span> 
+</td> 
+</tr> 
+<tr> 
+<td> 
+Samadhan Gurjar 
+</td> 
+<td> 
+Rs4130.00 
+</td> 
+<td> 
+2024-06-10 13:30 
+</td> 
+<td> 
+<span class="badge bg-warning"> 
+Pending 
+</span> 
+</td> 
+</tr> 
+</tbody> 
+</table> 
+</div> 
+</section> 
+</main> 
+</div> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"> 
+</script> 
+<script> 
+// Sidebar navigation logic 
+const sidebarLinks = document.querySelectorAll('#sidebarMenu a.nav-link'); 
+const contentSections = document.querySelectorAll('main .content-section'); 
+sidebarLinks.forEach(link => { 
+link.addEventListener('click', e => { 
+e.preventDefault(); 
+sidebarLinks.forEach(l => l.classList.remove('active')); 
+link.classList.add('active'); 
+const targetId = link.getAttribute('href').substring(1); 
+contentSections.forEach(section => { 
+if (section.id === targetId) { 
+section.classList.remove('d-none'); 
+} else { 
+section.classList.add('d-none'); 
+} 
+}); 
+}); 
+}); 
+// Hospital Management Form 
+const hospitalForm = document.getElementById('hospitalForm'); 
+const hospitalTableBody = document.getElementById('hospitalTableBody'); 
+hospitalForm.addEventListener('submit', e => { 
+e.preventDefault(); 
+const name = hospitalForm.hospitalName.value.trim(); 
+const location = hospitalForm.hospitalLocation.value.trim(); 
+const billingApi = hospitalForm.billingApi.value.trim(); 
+if (!name || !location) return; 
+const newRow = document.createElement('tr'); 
+const newIndex = hospitalTableBody.children.length + 1; 
+newRow.innerHTML = ` 
+<td>${newIndex}</td> 
+<td>${name}</td> 
+<td>${location}</td> 
+<td>${billingApi || ''}</td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editHospitalBtn"><i class="fas fa-edit"></i></button> 
+<button class="btn btn-sm btn-outline-danger deleteHospitalBtn"><i class="fas fa-trash-alt"></i></button> 
+</td> 
+`; 
+hospitalTableBody.appendChild(newRow); 
+hospitalForm.reset(); 
+}); 
+hospitalTableBody.addEventListener('click', e => { 
+if (e.target.closest('.deleteHospitalBtn')) { 
+const row = e.target.closest('tr'); 
+row.remove(); 
+// Re-index rows 
+Array.from(hospitalTableBody.children).forEach((tr, i) => { 
+tr.children[0].textContent = i + 1; 
+}); 
+} 
+if (e.target.closest('.editHospitalBtn')) { 
+const row = e.target.closest('tr'); 
+const cells = row.children; 
+const name = cells[1].textContent; 
+const location = cells[2].textContent; 
+const billingApi = cells[3].textContent; 
+hospitalForm.hospitalName.value = name; 
+hospitalForm.hospitalLocation.value = location; 
+hospitalForm.billingApi.value = billingApi; 
+row.remove(); 
+// Re-index rows 
+Array.from(hospitalTableBody.children).forEach((tr, i) => { 
+tr.children[0].textContent = i + 1; 
+}); 
+} 
+}); 
+// Patient Management Form 
+const patientForm = document.getElementById('patientForm'); 
+const patientTableBody = document.getElementById('patientTableBody'); 
+const patientSearch = document.getElementById('patientSearch'); 
+patientForm.addEventListener('submit', e => { 
+e.preventDefault(); 
+const name = patientForm.patientName.value.trim(); 
+const age = patientForm.patientAge.value.trim(); 
+const gender = patientForm.patientGender.value; 
+const room = patientForm.patientRoom.value.trim(); 
+const illness = patientForm.patientIllness.value; 
+const admissionDate = patientForm.admissionDate.value; 
+if (!name || !age || !gender || !room || !illness || !admissionDate) return; 
+const newRow = document.createElement('tr'); 
+const newIndex = patientTableBody.children.length + 1; 
+newRow.innerHTML = ` 
+<td>${newIndex}</td> 
+<td>${name}</td> 
+<td>${age}</td> 
+<td>${gender}</td> 
+<td>${room}</td> 
+<td>${illness}</td> 
+<td>${admissionDate}</td> 
+<td><span class="badge bg-success">Admitted</span></td> 
+<td> 
+<button class="btn btn-sm btn-outline-secondary me-1 editPatientBtn"><i class="fas fa-edit"></i></button> 
+<button class="btn btn-sm btn-outline-danger dischargePatientBtn"><i class="fas fa-user-slash"></i></button> 
+</td> 
+`; 
+patientTableBody.appendChild(newRow); 
+patientForm.reset(); 
+}); 
+patientTableBody.addEventListener('click', e => { 
+if (e.target.closest('.dischargePatientBtn')) { 
+const row = e.target.closest('tr'); 
+const statusCell = row.children[7]; 
+statusCell.innerHTML = '<span class="badge bg-danger">Discharged</span>'; 
+} 
+if (e.target.closest('.editPatientBtn')) { 
+const row = e.target.closest('tr'); 
+const cells = row.children; 
+patientForm.patientName.value = cells[1].textContent; 
+patientForm.patientAge.value = cells[2].textContent; 
+patientForm.patientGender.value = cells[3].textContent; 
+patientForm.patientRoom.value = cells[4].textContent; 
+patientForm.patientIllness.value = cells[5].textContent; 
+patientForm.admissionDate.value = cells[6].textContent; 
+row.remove(); 
+// Re-index rows 
+Array.from(patientTableBody.children).forEach((tr, i) => { 
+tr.children[0].textContent = i + 1; 
+}); 
+} 
+}); 
+patientSearch.addEventListener('input', e => { 
+const query = e.target.value.toLowerCase(); 
+Array.from(patientTableBody.children).forEach(row => { 
+const name = row.children[1].textContent.toLowerCase(); 
+const room = row.children[4].textContent.toLowerCase(); 
+const illness = row.children[5].textContent.toLowerCase(); 
+if (name.includes(query) || room.includes(query) || illness.includes(query)) { 
+row.style.display = ''; 
+} else { 
+row.style.display = 'none'; 
+} 
+}); 
+}); 
+// Diet Management 
+const illnessList = document.getElementById('illnessList'); 
+const dietChartTitle = document.getElementById('dietChartTitle'); 
+const dietChartForm = document.getElementById('dietChartForm'); 
+const foodItemsInput = document.getElementById('foodItems'); 
+const nutritionalInfoInput = document.getElementById('nutritionalInfo'); 
+// Sample diet charts data 
+const dietChartsData = { 
+Diabetes: { 
+foodItems: 'Brown rice, Steamed vegetables, Grilled chicken, Low sugar fruits', 
+nutritionalInfo: 'Low sugar, high fiber, balanced carbs' 
+}, 
+Kidney: { 
+foodItems: 'White rice, Boiled potatoes, Fresh fruits, Low sodium soups', 
+nutritionalInfo: 'Low sodium, low potassium, controlled protein' 
+}, 
+Hypertension: { 
+foodItems: 'Oats, Fresh vegetables, Lean meats, Low salt snacks', 
+nutritionalInfo: 'Low sodium, heart-healthy fats' 
+}, 
+Cardiac: { 
+foodItems: 'Whole grains, Fish, Nuts, Fresh fruits and vegetables', 
+nutritionalInfo: 'Low cholesterol, omega-3 rich' 
+}, 
+Liver: { 
+foodItems: 'Steamed vegetables, Brown rice, Lean protein, Herbal teas', 
+nutritionalInfo: 'Low fat, detoxifying foods' 
+}, 
+General: { 
+foodItems: 'Balanced diet with fruits, vegetables, grains, and proteins', 
+nutritionalInfo: 'General nutrition for recovery' 
+} 
+}; 
+let selectedIllness = null; 
+illnessList.addEventListener('click', e => { 
+if (e.target.tagName === 'LI') { 
+illnessList.querySelectorAll('li').forEach(li => li.classList.remove('active')); 
+e.target.classList.add('active'); 
+selectedIllness = e.target.dataset.illness; 
+dietChartTitle.textContent = `Diet Chart for ${selectedIllness}`; 
+dietChartForm.classList.remove('d-none'); 
+if (dietChartsData[selectedIllness]) { 
+foodItemsInput.value = dietChartsData[selectedIllness].foodItems; 
+nutritionalInfoInput.value = dietChartsData[selectedIllness].nutritionalInfo; 
+} else { 
+foodItemsInput.value = ''; 
+nutritionalInfoInput.value = ''; 
+} 
+} 
+}); 
+dietChartForm.addEventListener('submit', e => { 
+e.preventDefault(); 
+if (!selectedIllness) return; 
+dietChartsData[selectedIllness] = { 
+foodItems: foodItemsInput.value.trim(), 
+nutritionalInfo: nutritionalInfoInput.value.trim() 
+}; 
+alert(`Diet chart for ${selectedIllness} saved successfully.`); 
+}); 
+// Meal Tracking - Update Status Buttons 
+const updateStatusButtons = document.querySelectorAll('.updateStatusBtn'); 
+function updateMealStatus(button) { 
+const row = button.closest('tr'); 
+const statusSpan = row.querySelector('td:nth-child(4) span'); 
+const newStatus = button.dataset.status; 
+switch (newStatus) { 
+case 'prepared': 
+statusSpan.textContent = 'Prepared'; 
+statusSpan.className = 'status-prepared'; 
+button.textContent = 'Dispatch'; 
+button.className = 'btn btn-sm btn-warning updateStatusBtn'; 
+button.dataset.status = 'dispatched'; 
+break; 
+case 'dispatched': 
+statusSpan.textContent = 'Dispatched'; 
+statusSpan.className = 'status-dispatched'; 
+button.textContent = 'Mark Delivered'; 
+button.className = 'btn btn-sm btn-success updateStatusBtn'; 
+button.dataset.status = 'delivered'; 
+break; 
+case 'delivered': 
+statusSpan.textContent = 'Delivered'; 
+statusSpan.className = 'status-delivered'; 
+button.remove(); 
+break; 
+} 
+} 
+document.querySelectorAll('.updateStatusBtn').forEach(btn => { 
+btn.addEventListener('click', () => updateMealStatus(btn)); 
+}); 
+// Delegate event for dynamically changed buttons 
+document.getElementById('mealTracking').addEventListener('click', e => { 
+if (e.target.classList.contains('updateStatusBtn')) { 
+updateMealStatus(e.target); 
+} 
+}); 
+// Billing Sync Button 
+const syncBillingBtn = document.getElementById('syncBillingBtn'); 
+syncBillingBtn.addEventListener('click', () => { 
+syncBillingBtn.disabled = true; 
+syncBillingBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Syncing...'; 
+setTimeout(() => { 
+alert('Billing data synced successfully with hospital billing system.'); 
+syncBillingBtn.disabled = false; 
+syncBillingBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Sync with Hospital Billing System'; 
+}, 2000); 
+}); 
+// Logout button (dummy) 
+document.getElementById('logoutBtn').addEventListener('click', e => { 
+e.preventDefault(); 
+alert('Logout functionality not implemented in this demo.'); 
+}); 
+</script> 
+</body> 
+</html> 
